@@ -14,7 +14,7 @@ from datetime import datetime
 import RPi.GPIO as GPIO
 pin = 18
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(17, GPIO.OUT)
+GPIO.setup(pin, GPIO.OUT)
 
 hour_open = 7
 hour_close = 22
