@@ -12,6 +12,10 @@ Entre 22h et 7h: le GPIO 18 est high: le trou 1 et 2â€¯se touchent, la porte sâ€
 import time
 from datetime import datetime
 import RPi.GPIO as GPIO
+import logging
+
+logging.basicConfig(filename="main.log", level=logging.DEBUG, format="%(asctime)s -- %(name)s -- %(levelname)s -- %(message)s")
+
 pin = 18
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(pin, GPIO.OUT)
@@ -21,12 +25,14 @@ hour_close = 22
 
 def open_door():
     GPIO.output(pin, GPIO.LOW)
+    logging.info("Door Opened")
 
 def is_open():
     return GPIO.input(pin) == 0
 
 def close_door():
     GPIO.output(pin, GPIO.HIGH)
+    logging.info("Door Closed")
 
 
 def main():
