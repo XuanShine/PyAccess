@@ -11,7 +11,10 @@ Entre 22h et 7h: le GPIO 18 est high: le trou 1 et 2â€¯se touchent, la porte sâ€
 
 import time
 from datetime import datetime
-import RPi.GPIO as GPIO
+try:
+    import RPi.GPIO as GPIO
+except ImportError:
+    from RPiSim.GPIO import GPIO
 import logging
 
 logging.basicConfig(filename="main.log", level=logging.DEBUG, format="%(asctime)s -- %(name)s -- %(levelname)s -- %(message)s")
