@@ -1,0 +1,15 @@
+*.log
+/.pytest_cache
+/.vscode
+/__pycache__
+/venv
+*.pyc
+__pycache__/
+__pycache__/price.cpython-37.pyc
+doortest.py
+PyDoorbird/
+PyWubook/
+id_doorbird.pkl
+id_pywubook.pkl
+main.log
+trash.py
