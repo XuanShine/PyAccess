@@ -10,7 +10,7 @@ from lock_door import *
 
 # schedule
 tasks = dict()
-hour_on_off = [7, 22]
+hour_on_off = ["07", "22"]
 
 def run_schedule():
     while True:
@@ -24,7 +24,7 @@ def hello():
     name = request.args.get("name", "World")
     return f'Hello, {escape(name)}!'
 
-@app.route('/set_state')
+@app.route('/set_state/<state>/<wait_time>')
 def set_state(state: str, wait_time=3600):
     """state can be 'on' on 'off' """
     if state == "on":
@@ -40,7 +40,8 @@ def set_state(state: str, wait_time=3600):
         time.sleep(wait_time)
         tasks["on"] = schedule.every().day.at(f"{hour_on_off[0]}:00").do(open_door)
         tasks["off"] = schedule.every().day.at(f"{hour_on_off[1]}:00").do(close_door)
-        tasks["auto"] = schedule.every().hour.run(lock_door.main, *hour_on_off) 
+        tasks["auto"] = schedule.every().hour.do(lock_door.main, *hour_on_off) 
+        tasks["auto"].run()
 
     t2 = Thread(target=restart_jobs)
     t2.start()
@@ -49,7 +50,7 @@ def set_state(state: str, wait_time=3600):
 def get_state():
     return "open" if is_open() else "close"
 
-@app.route("/set_state_hour")
+@app.route("/set_state_hour/<state>/<string:hour>")
 def set_state_hour(state, hour):
     """
     <state> : "on" "off" "auto" 
@@ -59,9 +60,9 @@ def set_state_hour(state, hour):
         schedule.cancel_job(tasks["on"])
         schedule.cancel_job(tasks["off"])
         schedule.cancel_job(tasks["auto"])
-        tasks["on"] = schedule.every().day.at(f"7:00").do(open_door)
+        tasks["on"] = schedule.every().day.at(f"07:00").do(open_door)
         tasks["off"] = schedule.every().day.at(f"22:00").do(close_door)
-        tasks["auto"] = schedule.every().hour.run(lock_door.main, 7, 22)
+        tasks["auto"] = schedule.every().hour.do(lock_door.main, 7, 22)
     else:
         schedule.cancel_job(tasks["auto"])
         if state == "on":
@@ -73,7 +74,8 @@ def set_state_hour(state, hour):
             schedule.cancel_job(tasks["off"])
             tasks["off"] = schedule.every().day.at(f"{hour}:00").do(close_door)
         
-        tasks["auto"] = schedule.every().hour.run(lock_door.main, *hour_on_off) 
+        tasks["auto"] = schedule.every().hour.do(lock_door.main, *hour_on_off)
+        tasks["auto"].run()
 
     return f"Heures ouvert, fermé: {hour_on_off}"
 
@@ -86,9 +88,11 @@ def get_state_hour():
     return {"on": hour_on_off[0], "off": hour_on_off[1]}
 
 if __name__ == "__main__":
-    sched = Thread(target=run_schedule)
+    sched = Thread(target=run_schedule, daemon=True)
     sched.start()
-    tasks["on"] = schedule.every().day.at(f"7:00").do(lock_door.open_door)
+    tasks["on"] = schedule.every().day.at(f"07:00").do(lock_door.open_door)
     tasks["off"] = schedule.every().day.at(f"22:00").do(lock_door.close_door)
+    tasks["auto"] = schedule.every().hour.do(lock_door.main, 7, 22)
+    tasks["auto"].run()
 
-    app.start()
+    app.run(debug=True, host="0.0.0.0", port=5000)
