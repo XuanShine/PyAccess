@@ -95,4 +95,4 @@ if __name__ == "__main__":
     tasks["auto"] = schedule.every().hour.do(lock_door.main, 7, 22)
     tasks["auto"].run()
 
-    app.run(debug=True, host="0.0.0.0", port=5000)
+    app.run(debug=True, host="0.0.0.0", port=5000, use_reloader=False)
