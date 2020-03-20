@@ -14,7 +14,7 @@ from datetime import datetime
 import RPi.GPIO as GPIO
 pin = 18
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(17, GPIO.OUT)
+GPIO.setup(pin, GPIO.OUT)
 
 hour_open = 7
 hour_close = 22
@@ -29,7 +29,7 @@ def close_door():
     GPIO.output(pin, GPIO.HIGH)
 
 
-def main():
+def main(hour_open=hour_open, hour_close=hour_close):
     if hour_open <= datetime.now().hour < hour_close:  # open
         if not is_open():
             open_door()
