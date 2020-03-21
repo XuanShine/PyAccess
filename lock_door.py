@@ -16,8 +16,11 @@ try:
 except ImportError:
     from RPiSim.GPIO import GPIO
 import logging
+import os
 
-logging.basicConfig(filename="main.log", level=logging.DEBUG, format="%(asctime)s -- %(name)s -- %(levelname)s -- %(message)s")
+C = os.path.abspath(os.path.dirname(__file__))
+
+logging.basicConfig(filename=os.path.join(C, "lock_door.log"), level=logging.DEBUG, format="%(asctime)s -- %(name)s -- %(levelname)s -- %(message)s")
 
 pin = 18
 GPIO.setmode(GPIO.BCM)
