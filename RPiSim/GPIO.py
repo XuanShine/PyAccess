@@ -19,8 +19,8 @@ class App(threading.Thread):
     
 
         
-    def __init__(self):
-        threading.Thread.__init__(self)
+    def __init__(self, *args, **kwargs):
+        threading.Thread.__init__(self, *args, **kwargs)
         self.start()
 
         
@@ -271,7 +271,7 @@ class App(threading.Thread):
 ##        button1.unbind("<Button-1>")
      
 
-app = App()
+app = App(daemon=True)
 
 
 def toggleButton(gpioID):
@@ -386,7 +386,8 @@ class GPIO:
 
         #check if channel is already setup
         if str(channel) in dictionaryPins:
-            raise Exception('GPIO is already setup')
+            pass
+            # raise Exception('GPIO is already setup')
 
         if(state == GPIO.OUT):
             #GPIO is set as output, default OUT 0
