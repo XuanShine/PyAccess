@@ -41,7 +41,7 @@ relai = { 1: 5,  # porte entrée
 hour_open = 7
 hour_close = 22
 schedule_hour = {
-    2: (6, 21, "off"),
+    2: (6, 19, "off"),
     3: (7, 23, "on"),
     4: (8, 18, "off"),
     6: (15, 22, "on"),
