@@ -63,7 +63,7 @@ def open_door():
     logging.info("Door Opened")
 
 def is_open():
-    return GPIO.input(relai[1]) == 0
+    return GPIO.input(relai[1]) == GPIO.HIGH
 
 def close_door():
     GPIO.output(relai[1], GPIO.LOW)
