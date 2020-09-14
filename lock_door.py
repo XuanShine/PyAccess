@@ -34,18 +34,20 @@ relai = { 1: 5,  # porte entrée
             2: 6,  # lumières enseignes
             3: 13,  # lumières out-receptions
             4: 16,  # lumières porches (ext)
-            5: 19,  # lumières salle petit-déj
+            5: 19,  # lumières in-reception
             6: 20,  # lumières banque
-            7: 21,  # lumières in-reception
-            8: 26 } 
+            7: 21,  # lumières salle petit-déj buffet
+            8: 26 } # lumières salle petit-déj tables
 hour_open = 7
 hour_close = 22
 schedule_hour = {
     2: (6, 19, "off"),
     3: (7, 23, "on"),
     4: (8, 18, "off"),
+    5: (12, 15, "off"),
     6: (15, 22, "on"),
-    7: (12, 15, "off")
+    7: (7, 23, "on"),
+    8: (7, 11, "on")    
 }
 
 def init_GPIO():
@@ -79,15 +81,7 @@ def turn(state, relai_ch):
 def is_on(relai_ch):
     return GPIO.input(relai[relai_ch]) != 0
 
-
-def main(hour_open=hour_open, hour_close=hour_close):
-    init_GPIO()
-    if hour_open <= datetime.now().hour < hour_close:  # open
-        if not is_open():
-            open_door()
-    else:
-        if is_open():
-            close_door()
+def init_lamp():
     for relai_ch in schedule_hour.keys():
         h_top = schedule_hour[relai_ch][0]
         h_bot = schedule_hour[relai_ch][1]
@@ -97,6 +91,15 @@ def main(hour_open=hour_open, hour_close=hour_close):
             turn(state, relai_ch)
         else:
             turn(anti_state, relai_ch)
+
+
+def main(hour_open=hour_open, hour_close=hour_close):
+    if hour_open <= datetime.now().hour < hour_close:  # open
+        if not is_open():
+            open_door()
+    else:
+        if is_open():
+            close_door()
     
     # GPIO.cleanup()
 
