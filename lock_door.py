@@ -77,7 +77,7 @@ def turn(state, relai_ch):
     logging.info(f"{relai_ch} : {state}")
 
 def is_on(relai_ch):
-    return GPIO.input(relai[relai_ch]) != 0
+    return GPIO.input(relai[relai_ch]) != GPIO.HIGH
 
 
 def main(hour_open=hour_open, hour_close=hour_close):
