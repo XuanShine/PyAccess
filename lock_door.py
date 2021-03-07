@@ -22,10 +22,10 @@ from datetime import datetime
 try:
     import RPi.GPIO as GPIO
 except ImportError:
-    from RPiSim.GPIO import GPIO
+    from RPiSim.GPIO import GPIO  # Simulation
 import logging
 import os
-"   "
+
 C = os.path.abspath(os.path.dirname(__file__))
 
 logging.basicConfig(filename=os.path.join(C, "lock_door.log"), level=logging.DEBUG, format="%(asctime)s -- %(name)s -- %(levelname)s -- %(message)s")
