@@ -1,7 +1,6 @@
 import sys, os
 import logging
 C = os.path.abspath(os.path.dirname(__file__))
-sys.path.append(C)
 
 logging.basicConfig(filename=os.path.join(C, "run_server.log"), level=logging.INFO, format="%(asctime)s -- %(name)s -- %(levelname)s -- %(message)s")
 
@@ -9,10 +8,13 @@ from datetime import datetime
 
 from bottle import run, template, Bottle, Response, route
 from bottle import jinja2_view
+import bottle
 
 import lock_door
+sys.path.append(C)
 
 pyaccess = Bottle()
+bottle.TEMPLATE_PATH.insert(0, os.path.join(C, 'views'))
 
 import socket
 def get_ip():
