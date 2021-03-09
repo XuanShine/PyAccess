@@ -7,6 +7,18 @@ import lock_door
 
 pyaccess = Bottle()
 
+import socket
+def get_ip():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        # doesn't even have to be reachable
+        s.connect(('10.255.255.255', 1))
+        IP = s.getsockname()[0]
+    except Exception:
+        IP = '127.0.0.1'
+    finally:
+        s.close()
+    return IP
 
 @pyaccess.route("/help")
 def help():
@@ -36,7 +48,7 @@ def index():
         8: "lumières salle petit-déj tables",
     }
     state_relais = {relai: lock_door.is_on(relai) for relai in list_relais.keys()}
-    return {"list_relais":list_relais, "state_relais":state_relais}
+    return {"list_relais":list_relais, "state_relais":state_relais, "myip":get_ip()}
 
 
 @pyaccess.route("/turn/<state>/<relai_ch>")

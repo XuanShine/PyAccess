@@ -41,7 +41,7 @@
       $(document).ready(function() {
         $(".relai").click(function(event) {
           var state = event.target.checked ? "on" : "off";
-          $.get("http://localhost:8080/turn/" + state + "/" + event.target.name, function(data) {
+          $.get("http://{{ myip }}:8080/turn/" + state + "/" + event.target.name, function(data) {
             $("#historique").html($("#historique").html() + "<br>" + data);
           }).fail(function(data) {
             $("#historique").html($("#historique").html() + "<br>Last action failed");
