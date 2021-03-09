@@ -1,3 +1,5 @@
 RPi.GPIO
-flask
+bottle
 pytest
+jinja2
+cheroot
