@@ -75,7 +75,9 @@ server = WSGIServer(("0.0.0.0", 8080), d)
 
 if __name__ == "__main__":
     try:
+        # pyaccess.run(host="0.0.0.0", port=8080)
         server.start()
+        pass
     except KeyboardInterrupt:
         server.stop()
 
